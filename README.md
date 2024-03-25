@@ -1,7 +1,3 @@
-Let's streamline the README to focus on simplicity, elegance, and the essence of **Loquor**. We'll cut down on the fluff and make sure each word carries its weight.
-
----
-
 # Loquor 🗣️
 
 **Loquor** elegantly bridges Git repositories and Language Learning Models (LLMs), offering a simple tool for extracting and preparing your code for LLM interactions.
