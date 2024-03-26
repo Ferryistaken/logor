@@ -14,6 +14,11 @@ def get_git_tracked_files():
         print(f"Error occurred while trying to list git tracked files: {e}")
         return []
 
+def get_all_files():
+    """Get a list of all files in the current directory and subdirectories."""
+    all_files = [str(path) for path in Path('.').rglob('*') if path.is_file()]
+    return all_files
+
 def filter_files(file_paths, includes, excludes):
     """Filter files based on include and exclude patterns."""
     filtered_files = []
@@ -43,15 +48,20 @@ def read_files_content(file_paths):
     return content
 
 def main():
-    parser = argparse.ArgumentParser(description="Print files from a git repo matching certain patterns.")
+    parser = argparse.ArgumentParser(description="Print files matching certain patterns.")
     parser.add_argument('-i', '--include', action='append', default=[], help='Pattern to include (can be used multiple times).')
     parser.add_argument('-e', '--exclude', action='append', default=[], help='Pattern to exclude (can be used multiple times).')
     parser.add_argument('-c', '--copy', action='store_true', help='Copy the output to the clipboard for easy pasting.')
+    parser.add_argument('-a', '--all', action='store_true', help='Search over all files instead of just git tracked files.')
 
     args = parser.parse_args()
 
-    git_files = get_git_tracked_files()
-    filtered_files = filter_files(git_files, args.include, args.exclude)
+    if args.all:
+        file_paths = get_all_files()
+    else:
+        file_paths = get_git_tracked_files()
+    
+    filtered_files = filter_files(file_paths, args.include, args.exclude)
     output_content = read_files_content(filtered_files)
 
     if args.copy:
